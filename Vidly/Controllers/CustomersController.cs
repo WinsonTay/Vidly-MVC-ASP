@@ -24,9 +24,13 @@ namespace Vidly.Controllers
         // GET: Customers
         public ActionResult Details(int id)
         {
-            Customer customer = customers.Find(x => x.id == id);
-          
-            return View(customer);
+            Customer customer = customers.FirstOrDefault(x => x.id == id);
+            if(customer != null)
+            {
+                return View(customer);
+            }
+
+            return HttpNotFound();
         }
 
 
