@@ -1,0 +1,26 @@
+﻿@model List<Vidly.Models.Customer>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Customer</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Customer</th>
+        </tr>
+    </thead>
+    @foreach (var customer in Model)
+    {
+        <tr>
+            <td>
+                <a href="/Customers/Details/@customer.id">@customer.name</a>
+                
+            </td>
+        </tr>
+
+    }
+
+</table>
+
+
