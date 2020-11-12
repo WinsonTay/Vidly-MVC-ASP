@@ -1,6 +1,7 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,22 +11,28 @@ namespace Vidly.Controllers
 {
     public class CustomersController : Controller
     {
-
-        public List<Customer> customers = new List<Customer>()
+        private ApplicationDbContext _context;
+        public CustomersController()
         {
-            new Customer {id=1 , name = "John Cena"},
-            new Customer {id=2 , name = "Lewis Hamilton"}
-        };
-        // GET: Customers
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
+
+        
         public ActionResult Index()
         {
-           
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
+
             return View(customers);
         }
         // GET: Customers
         public ActionResult Details(int id)
         {
-            Customer customer = customers.FirstOrDefault(x => x.id == id);
+            Customer customer = _context.Customers.Include(c=> c.MembershipType).FirstOrDefault(x => x.id == id);
             if(customer != null)
             {
                 return View(customer);

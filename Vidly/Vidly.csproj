@@ -184,9 +184,42 @@
     <Compile Include="Migrations\202011081606315_AddCreatedAtToCustomer.designer.cs">
       <DependentUpon>202011081606315_AddCreatedAtToCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202011100853311_PopulateMembershipTypes.cs" />
+    <Compile Include="Migrations\202011100853311_PopulateMembershipTypes.Designer.cs">
+      <DependentUpon>202011100853311_PopulateMembershipTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011100904107_AddDataNotationToCustomers.cs" />
+    <Compile Include="Migrations\202011100904107_AddDataNotationToCustomers.designer.cs">
+      <DependentUpon>202011100904107_AddDataNotationToCustomers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011101001186_AddNameToMembershipType.cs" />
+    <Compile Include="Migrations\202011101001186_AddNameToMembershipType.designer.cs">
+      <DependentUpon>202011101001186_AddNameToMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011101003073_UpdateNameInMembershipType.cs" />
+    <Compile Include="Migrations\202011101003073_UpdateNameInMembershipType.Designer.cs">
+      <DependentUpon>202011101003073_UpdateNameInMembershipType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011101521193_AddBirthDateToCustomer.cs" />
+    <Compile Include="Migrations\202011101521193_AddBirthDateToCustomer.designer.cs">
+      <DependentUpon>202011101521193_AddBirthDateToCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011111012157_AddMovieGenre.cs" />
+    <Compile Include="Migrations\202011111012157_AddMovieGenre.designer.cs">
+      <DependentUpon>202011111012157_AddMovieGenre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011120626228_AddReleasedDateNumberInStockInMovies.cs" />
+    <Compile Include="Migrations\202011120626228_AddReleasedDateNumberInStockInMovies.designer.cs">
+      <DependentUpon>202011120626228_AddReleasedDateNumberInStockInMovies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202011120631283_PopulateGenre.cs" />
+    <Compile Include="Migrations\202011120631283_PopulateGenre.designer.cs">
+      <DependentUpon>202011120631283_PopulateGenre.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -340,6 +373,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Movies\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -368,6 +402,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202011081606315_AddCreatedAtToCustomer.resx">
       <DependentUpon>202011081606315_AddCreatedAtToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011100853311_PopulateMembershipTypes.resx">
+      <DependentUpon>202011100853311_PopulateMembershipTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011100904107_AddDataNotationToCustomers.resx">
+      <DependentUpon>202011100904107_AddDataNotationToCustomers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011101001186_AddNameToMembershipType.resx">
+      <DependentUpon>202011101001186_AddNameToMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011101003073_UpdateNameInMembershipType.resx">
+      <DependentUpon>202011101003073_UpdateNameInMembershipType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011101521193_AddBirthDateToCustomer.resx">
+      <DependentUpon>202011101521193_AddBirthDateToCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011111012157_AddMovieGenre.resx">
+      <DependentUpon>202011111012157_AddMovieGenre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011120626228_AddReleasedDateNumberInStockInMovies.resx">
+      <DependentUpon>202011120626228_AddReleasedDateNumberInStockInMovies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202011120631283_PopulateGenre.resx">
+      <DependentUpon>202011120631283_PopulateGenre.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
