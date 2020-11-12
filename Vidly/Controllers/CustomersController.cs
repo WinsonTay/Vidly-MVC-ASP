@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Vidly.Models;
+using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
@@ -29,7 +30,7 @@ namespace Vidly.Controllers
 
             return View(customers);
         }
-        // GET: Customers
+     
         public ActionResult Details(int id)
         {
             Customer customer = _context.Customers.Include(c=> c.MembershipType).FirstOrDefault(x => x.id == id);
@@ -40,6 +41,27 @@ namespace Vidly.Controllers
 
             return HttpNotFound();
         }
+
+        public ActionResult New()
+        {
+           var membershipTypes = _context.MembershipTypes.ToList();
+            NewCustomerViewModel viewModel = new NewCustomerViewModel
+            {
+                MembershipTypes = membershipTypes
+            };   
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Customer customer)
+
+        {
+            //Saving Data
+            var newCustomer = _context.Customers.Add(customer);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Customers");
+        }
+        
 
 
     }

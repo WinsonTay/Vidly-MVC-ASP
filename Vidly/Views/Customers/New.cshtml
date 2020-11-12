@@ -1,0 +1,35 @@
+﻿@model Vidly.ViewModels.NewCustomerViewModel
+@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="text-align:center">New Customer</h2>
+
+<div  style="border:2px solid black; padding:15px; border-radius:5px; text-align:center; width:50%; margin-left:auto; margin-right:auto">
+    @using (Html.BeginForm("Create", "Customers" ))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Customer.name, "Name")
+            @Html.TextBoxFor(m => m.Customer.name, new { @class = "form-control" ,@style="margin-left:auto; margin-right:auto; background-color:rgba(211,211,211,0.3)" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Customer.BirthDate, "Birth Date")
+            @Html.TextBoxFor(m => m.Customer.BirthDate, new { @class = "form-control", @style = "margin-left:auto; margin-right:auto;  background-color:rgba(211,211,211,0.3)" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(m => m.Customer.IsSubcribedToNewsLetter, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.Customer.IsSubcribedToNewsLetter, "Subcribe Newsletter ")
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Customer.MemberShipTypeId, "Membership Types")
+            @Html.DropDownListFor(m => m.Customer.MemberShipTypeId,new SelectList(Model.MembershipTypes, "Id", "Name"), "Select Membership Type", new { @class="form-control" , @style = "margin-left:auto; margin-right:auto;background-color:rgba(211,211,211,0.3)" })
+        </div>
+        <button class="btn btn-primary">Submit</button>
+
+    }
+    
+</div>
+
+
+
