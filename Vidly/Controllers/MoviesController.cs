@@ -55,30 +55,60 @@ namespace Vidly.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Edit(int id)
-        {
-            return Content("id=" + id);
-        }
-
+   
         public ViewResult Details(int id)
         {
             var movie = _context.Movies.Include(m => m.Genre).SingleOrDefault(m => m.id == id);
             return View(movie);
         }
-                                    // '?' for nullable pageIndex
-        //public ActionResult Index(int? pageIndex , string sortBy)
-        //{
-        //    if (!pageIndex.HasValue)
-        //    {
-        //        pageIndex = 1;
-        //    }
-        //    if (String.IsNullOrWhiteSpace(sortBy))
-        //    {
-        //        sortBy = "Name";
-        //    }
-        //    return Content($"pageIndex={pageIndex}&sortBy={sortBy}");
-        //}
+        public ActionResult Save(Movie movie)
+        {
+            if(movie.id == 0)
+            {
+                var newMovie = _context.Movies.Add(movie);
+            }
+            else
+            {
+                var existingMovie = _context.Movies.SingleOrDefault(m => m.id == movie.id);
+                existingMovie.Name = movie.Name;
+                existingMovie.GenreId = movie.GenreId;
+                existingMovie.ReleasedDate = movie.ReleasedDate;
+                existingMovie.NumberInStock = movie.NumberInStock;
+            }
+            
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movies");
+           
+        }
+        
+        public ActionResult New()
+        {
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = _context.Genres.ToList()
 
+            };
+            return View("MovieForm", viewModel);
+        }
+        public ActionResult Edit(int id)
+        {
+            var movie = _context.Movies.FirstOrDefault(m => m.id == id);
+            if (movie == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+
+                var viewModel = new MovieFormViewModel
+                {
+                    Genres = _context.Genres.ToList(),
+                    Movie = movie
+                };
+                return View("MovieForm", viewModel);
+            }
+        
+        }
         [Route("movies/release/{year}/{month:regex(\\d{2}):range(1,12)}")]
         public ActionResult ByReleaseDate(int year, int month)
         {

@@ -45,23 +45,56 @@ namespace Vidly.Controllers
         public ActionResult New()
         {
            var membershipTypes = _context.MembershipTypes.ToList();
-            NewCustomerViewModel viewModel = new NewCustomerViewModel
+            CustomerFormViewModel viewModel = new CustomerFormViewModel
             {
-                MembershipTypes = membershipTypes
+                MembershipTypes = membershipTypes,
+
             };   
-            return View(viewModel);
+            return View("CustomerForm", viewModel);
         }
 
         [HttpPost]
-        public ActionResult Create(Customer customer)
+        public ActionResult Save(Customer customer)
 
         {
-            //Saving Data
-            var newCustomer = _context.Customers.Add(customer);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "Customers");
+
+
+            if(customer.id  == 0)
+            {
+                var newCustomer = _context.Customers.Add(customer);
+
+            }
+            else
+            {
+                var existingCustomer = _context.Customers.Single(c => c.id == customer.id);
+                existingCustomer.name = customer.name;
+                existingCustomer.MemberShipTypeId = customer.MemberShipTypeId;
+                existingCustomer.BirthDate = customer.BirthDate;
+                existingCustomer.IsSubcribedToNewsLetter = customer.IsSubcribedToNewsLetter;
+
+            }
+                //Saving Data
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Customers");
+
+                
+          
         }
-        
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.id == id);
+            //Saving Data
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
+
+              return View("CustomerForm" , viewModel);
+
+
+        }
+
 
 
     }
