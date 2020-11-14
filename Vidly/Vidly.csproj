@@ -225,6 +225,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\Validate18yrsOld.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
