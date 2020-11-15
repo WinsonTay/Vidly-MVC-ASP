@@ -9,11 +9,12 @@
 <h3>Movie</h3>
 @Html.ActionLink("New Movie", "New", "Movies", null,new { @class="btn btn-primary", @style="margin-bottom:10px;" })
 
-<table class="table table-bordered">
+<table id="movies" class="table table-bordered">
     <thead>
         <tr>
             <th>Movie </th>
             <th>Genre </th>
+            <th>Delete Movies</th>
         </tr>
     </thead>
     @foreach (var movie in Model)
@@ -25,7 +26,42 @@
             <td>
                 @movie.Genre.Type
             </td>
+            <td>
+                <button data-id="@movie.id" class="btn btn-link js-delete">Delete</button>
+            </td>
         </tr>
 
     }
 </table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+
+            $("#movies .js-delete").on('click', function () {
+
+                //bootbox.alert("hello");
+                bootbox.confirm("Are you sure you want to delete the record?", (result) => {
+                    if (result) {
+                             const movieId = $(this).data('id');
+                        fetch(`/api/movies/${movieId}` , {
+                                method: 'DELETE'
+
+                            }).then(response => {
+                                if (response.ok) {
+                                    $(this).parents("tr").remove()
+                                } else {
+                                    alert("Server Request Error");
+
+                                }
+                            })
+                    }
+                })
+
+            });
+        });
+    </script>
+    
+}

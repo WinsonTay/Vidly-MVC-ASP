@@ -5,34 +5,82 @@
 <h3>Customer</h3>
 @Html.ActionLink("New Customer", "New", "Customers", null, new { @class = "btn btn-primary", @style = "margin-bottom:10px;" })
 
-@if (Model.Any())
-{
-    <table class="table table-bordered">
+    <table id="customers" class="table table-bordered">
         <thead>
             <tr>
                 <th>Customer</th>
                 <th>Membership Type</th>
+                <th>Delete Customer</th>
             </tr>
         </thead>
-        @foreach (var customer in Model)
-        {
-            <tr>
-                <td>
-                    <a href="/Customers/Edit/@customer.id">@customer.name</a>
-                </td>
-                <td>
-                    @customer.MembershipType.Name
-                </td>
-            </tr>
-
-        }
+        <tbody>
+        </tbody>
 
     </table>
 
-}
-else
+
+
+@section scripts
 {
-    <p>Dont have any Customers Yet</p>
+    <script>
+        $(document).ready(function () {
+            $("#customers").DataTable({
+                ajax: {
+                    url: '/api/customers',
+                    dataSrc:""
+                },
+                serverSide:true,
+                drawCallback: function (settings) {
+                     $("#customers .js-delete").on('click', function () {
+                        console.log("hello")
+                        //bootbox.alert("hello");
+                        bootbox.confirm("Are you sure you want to delete the record?", (result) => {
+                            if (result) {
+                                     const customerId = $(this).data('id');
+                                    console.log(customerId);
+                                    fetch(`/api/customers/${customerId}` , {
+                                        method: 'DELETE'
+
+                                    }).then(response => {
+                                        if (response.ok) {
+                                            $(this).parents("tr").remove()
+                                        } else {
+                                            alert("Server Request Error");
+
+                                        }
+                                    })
+                            }
+                        })
+        
+                    });
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href ='/customers/edit/" + customer.id + "'>" + customer.name + "</a>"
+                        }
+                    },
+                    {
+                        data: "MembershipType",
+                        render: function (data, type, customer) {
+                            return customer.membershipType.name
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return `<button data-id=${data} class='btn btn-link js-delete'>Delete</button>`
+                        }
+                    }
+                ]
+            });
+           
+           
+        });
+    </script>
+    
+        
 }
 
 
