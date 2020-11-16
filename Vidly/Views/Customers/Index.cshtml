@@ -29,14 +29,13 @@
                     url: '/api/customers',
                     dataSrc:""
                 },
-                serverSide:true,
                 drawCallback: function (settings) {
                      $("#customers .js-delete").on('click', function () {
                         console.log("hello")
                         //bootbox.alert("hello");
                         bootbox.confirm("Are you sure you want to delete the record?", (result) => {
                             if (result) {
-                                     const customerId = $(this).data('id');
+                                    const customerId = $(this).data('id');
                                     console.log(customerId);
                                     fetch(`/api/customers/${customerId}` , {
                                         method: 'DELETE'

@@ -109,7 +109,7 @@ namespace Vidly.Controllers.Api
         }
 
         // DELETE: api/Movies/5
-        
+        [HttpDelete]
         public IHttpActionResult DeleteMovie(int id)
         {
             Movie movie = db.Movies.Find(id);

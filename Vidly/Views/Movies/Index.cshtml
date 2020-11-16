@@ -17,21 +17,9 @@
             <th>Delete Movies</th>
         </tr>
     </thead>
-    @foreach (var movie in Model)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(movie.Name, "Edit", "Movies", new { id = movie.id} ,null)
-            </td>
-            <td>
-                @movie.Genre.Type
-            </td>
-            <td>
-                <button data-id="@movie.id" class="btn btn-link js-delete">Delete</button>
-            </td>
-        </tr>
+    <tbody>
 
-    }
+    </tbody>
 </table>
 
 @section scripts
@@ -39,28 +27,77 @@
     <script>
         $(document).ready(function () {
 
+            $("#movies").DataTable({
+                ajax: {
+                    url: "/api/movies",
+                    dataSrc:""
+                },
+                drawCallback: function (settings) {
+                    $("#movies .js-delete").on('click', function () {
+                        console.log("hello")
+                        //bootbox.alert("hello");
+                        bootbox.confirm("Are you sure you want to delete the record?", (result) => {
+                            if (result) {
+                                const movieId = $(this).data('id');
+                                
+                                fetch(`/api/movies/${movieId}`, {
+                                    method: 'DELETE'
 
-            $("#movies .js-delete").on('click', function () {
+                                }).then(response => {
+                                    if (response.ok) {
+                                        $(this).parents("tr").remove()
+                                    } else {
+                                        alert("Server Request Error");
 
-                //bootbox.alert("hello");
-                bootbox.confirm("Are you sure you want to delete the record?", (result) => {
-                    if (result) {
-                             const movieId = $(this).data('id');
-                        fetch(`/api/movies/${movieId}` , {
-                                method: 'DELETE'
+                                    }
+                                })
+                            }
+                        })
 
-                            }).then(response => {
-                                if (response.ok) {
-                                    $(this).parents("tr").remove()
-                                } else {
-                                    alert("Server Request Error");
-
-                                }
-                            })
+                    });
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, movie) {
+                            return "<a href ='/movies/edit/" + movie.id + "'>" + movie.name + "</a>"
+                        }
+                    },
+                    {
+                        data: "name",
+                       
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return `<button data-id=${data} class='btn btn-link js-delete'>Delete</button>`
+                        }
                     }
-                })
+                ]
+                
+            })
 
-            });
+            //$("#movies .js-delete").on('click', function () {
+
+            //    //bootbox.alert("hello");
+            //    bootbox.confirm("Are you sure you want to delete the record?", (result) => {
+            //        if (result) {
+            //                 const movieId = $(this).data('id');
+            //            fetch(`/api/movies/${movieId}` , {
+            //                    method: 'DELETE'
+
+            //                }).then(response => {
+            //                    if (response.ok) {
+            //                        $(this).parents("tr").remove()
+            //                    } else {
+            //                        alert("Server Request Error");
+
+            //                    }
+            //                })
+            //        }
+            //    })
+
+            //});
         });
     </script>
     
