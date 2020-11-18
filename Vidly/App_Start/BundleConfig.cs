@@ -13,9 +13,10 @@ namespace Vidly
                         "~/Scripts/jquery-{version}.js",
                         "~/Scripts/bootbox.js", 
                         "~/Scripts/bootstrap.js",
-                         "~/Scripts/popper.js",
+                         "~/Scripts/umd/popper.js",
                         "~/scripts/datatables/jquery.dataTables.js",
-                        "~/scripts/datatables/datatables.bootstrap4.js"));
+                        "~/scripts/datatables/datatables.bootstrap4.js",
+                        "~/scripts/typeahead.bundle.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

@@ -10,6 +10,7 @@ using Vidly.ViewModels;
 
 namespace Vidly.Controllers
 {
+    [AllowAnonymous]
     public class CustomersController : Controller
     {
         private ApplicationDbContext _context;
@@ -97,6 +98,8 @@ namespace Vidly.Controllers
         public ActionResult Edit(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.id == id);
+
+
             //Saving Data
             var viewModel = new CustomerFormViewModel
             {
