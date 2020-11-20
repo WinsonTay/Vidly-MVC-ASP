@@ -27,14 +27,19 @@ namespace Vidly.Controllers.Api
 
         //GET all customers
         [HttpGet]
-        public IHttpActionResult GetCustomer()
+        public IHttpActionResult GetCustomer(string query = null)
         {
-            var length = HttpContext.Current.Request.QueryString["length"];
-                var customers = _context.Customers
-                            .Include(c => c.MembershipType)
-                            .ToList()
-                            .Select(Mapper.Map<Customer , CustomerDto>);
-            return Ok(customers);
+            var customersQuery = _context.Customers.Include(c => c.MembershipType);
+
+            if(!String.IsNullOrWhiteSpace(query))
+            {
+                customersQuery = customersQuery.Where(c => c.name.Contains(query));
+
+            }
+
+            var customerDtos = customersQuery.ToList().Select(Mapper.Map<Customer, CustomerDto>);
+
+            return Ok(customerDtos);
         }
 
         //Get Specific Customer

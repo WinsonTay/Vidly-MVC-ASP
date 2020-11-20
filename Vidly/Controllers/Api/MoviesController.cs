@@ -19,9 +19,18 @@ namespace Vidly.Controllers.Api
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Movies
-        public IEnumerable<MovieDto> GetMovies()
+        public IHttpActionResult GetMovies(string query=null)
         {
-            var movies = db.Movies.ToList().Select(m =>
+
+            var moviesQuery = db.Movies.Include(m => m.Genre);
+
+            if (!String.IsNullOrWhiteSpace(query))
+            {
+                moviesQuery =  moviesQuery.Where(m => m.Name.Contains(query));
+            }
+
+            
+            var moviesDto = moviesQuery.ToList().Select(m =>
                 new MovieDto
                 {
                     id = m.id,
@@ -31,7 +40,7 @@ namespace Vidly.Controllers.Api
 
                 }
             );
-            return movies;
+            return Ok(moviesDto);
         }
 
         // GET: api/Movies/5
