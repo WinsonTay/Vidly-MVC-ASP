@@ -34,16 +34,15 @@ namespace Vidly.Controllers.Api
                 {
                    movieAvailability.NumberAvailable = movieAvailability.NumberAvailable - 1;
 
-                    newRentals.Add(new Rental
+                    db.Rentals.Add(new Rental
                     {
                         Customer = customer,
                         Movie = movie,
                         DateRented = DateTime.Now
                     });
-
-
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+                
             }
           
             

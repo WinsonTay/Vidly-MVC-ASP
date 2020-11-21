@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿
+using System.Web;
 using System.Web.Optimization;
 
 namespace Vidly
@@ -16,6 +17,7 @@ namespace Vidly
                          "~/Scripts/umd/popper.js",
                         "~/scripts/datatables/jquery.dataTables.js",
                         "~/scripts/datatables/datatables.bootstrap4.js",
+                        "~/scripts/toastr.js",
                         "~/scripts/typeahead.bundle.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -35,6 +37,7 @@ namespace Vidly
                       "~/Content/bootstrap-lumen.css",
                       "~/content/DataTables/css/datatables.bootstrap4.css",
                       "~/Content/style.css",
+                      "~/content/toastr.css",
                       "~/Content/Site.css"));
         }
     }

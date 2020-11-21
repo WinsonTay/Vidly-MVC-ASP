@@ -1,39 +1,48 @@
 ﻿
+
 @{
     ViewBag.Title = "New";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>New Rental</h2>
-<form>
+<form id="newRental">
     <div class="form-group">
-        <label class="d-block w-100">Customer</label>
-        <input id="customer" type="text" value="" class="form-control" />
+        <label for="customer" class="d-block w-100">Customer</label>
+        <input name="customer" id="customer" required data-rule-validcustomer="true"  type="text" value="" class="form-control" />
 
     </div>
     <div class="form-group">
-        <label class="d-block">Movies</label>
-        <input id="movies" type="text" value="" class="form-control" />
+        <label for="movies" class="d-block">Movies</label>
+        <input name="movies" data-rule-minSelect="true" id="movies" type="text" value="" class="form-control" />
     </div>
-    <ul id="moviesSelected" class="list-group">
+    <ul id="moviesSelected" class="list-group my-2">
     </ul>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <input type="submit" id="submitBtn" value="Submit" class="btn btn-primary">
 
 </form>
 
 @section scripts{
+    
+    @Scripts.Render("~/bundles/jqueryval");
     <script>
+        
         $(document).ready(function () {
+     
+  
             var vm = {
                 customerId: 0,
                 moviesId:[],
 
             }
+            var filterMovieId = [];
+
             var customers = new Bloodhound({
               datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-              queryTokenizer: Bloodhound.tokenizers.whitespace,
-              remote: {
-                url: '/api/customers?query=%QUERY',
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+                remote: {
+                    url: `/api/customers?query=%QUERY`,
                 wildcard: '%QUERY'
               }
             });
@@ -41,9 +50,24 @@
             var movies = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
+                identify: function (obj) {
+                    return obj.name;
+                },
                 remote: {
-                    url: '/api/movies?query=%QUERY',
-                    wildcard: '%QUERY'
+                    url: `/api/movies`,
+                    prepare: function (query, settings) {
+                        settings.url += '?query=' + query;
+                        return settings;
+                    },
+                    filter:function (data) {
+                        return $.map(data, function (obj) {
+                           
+                            // console.log(filteredObject);{
+                            const { id, name } = obj;
+                       
+                            return (!filterMovieId.includes(obj.id)) ? { id, name } : null
+                        });
+                    }
                 }
             });
 
@@ -66,11 +90,61 @@
                 source: movies
             }).on("typeahead:select", function (e, movie) {
                 vm.moviesId.push(movie.id)
-                $('#moviesSelected').append(`<li> ${movie.name}</li>`)
+                $('#moviesSelected').append(`<li id="${movie.id}" class="d-flex flex-row justify-content-between align-items-center list-group-item w-50"> 
+                                               <div class="">
+                                                        ${movie.name}
+                                                </div>
+                                                <div class="d-inline">
+                                                   <button type="button" id="${movie.id}" class="removeBtn btn btn-outline-danger">Remove</button>
+                                                </div>
+                                            </li>`)
                 $('#movies').typeahead("val", "")
+                filterMovieId.push(movie.id);
+                console.log(vm);
+            
+                $(`#${movie.id}`).find(".removeBtn").click(function (index) {            
+                        movieId = $(this).attr("id");
+                        filter = vm.moviesId.filter((id) => id != movieId)
+                        vm.moviesId = filter;
+                        filterMovieId = filterMovieId.filter((id) => id != movieId);
+                        
 
+                        $(this).parents()[1].remove()
+                });
             })
+            $.validator.addMethod("validcustomer", function () {
+                return (vm.customerId != 0 && vm.customerId)
+           }, "Please Select a Valid customer");
 
+           $.validator.addMethod("minSelect", function () {
+               return vm.moviesId.length > 0;
+           }, "Please Select at least one movie");
+   
+
+           $('#newRental').validate({
+               submitHandler: function() {
+                   event.preventDefault();
+                   response = fetch("/api/newrentals", {
+                       method:"POST",
+                       body: JSON.stringify(vm),
+                       headers: { "Content-Type": "application/json" }
+                   }).then(response => response.json())
+                     .then(status => {
+                           if (status.message == "success") {
+                              toastr.success("Rentals Successfully Added")
+                              $('#movies').typeahead("val", "")
+                              $('#customer').typeahead("val", "")
+                              vm.custmerId = null;
+                              vm.moviesId = [];
+                              $('#moviesSelected').empty();
+
+                           }else {
+                              toastr.error("Something unexpected Happen.")
+                           }
+                     })
+               }
+
+           }) 
          
         });
       

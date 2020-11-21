@@ -22,7 +22,7 @@ namespace Vidly.Controllers.Api
         public IHttpActionResult GetMovies(string query=null)
         {
 
-            var moviesQuery = db.Movies.Include(m => m.Genre);
+            var moviesQuery = db.Movies.Include(m => m.Genre).Where(m => m.NumberAvailable > 0);
 
             if (!String.IsNullOrWhiteSpace(query))
             {
